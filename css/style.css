@@ -366,7 +366,7 @@ dd {
 img {
   height: auto;
   /* Make sure images are scaled correctly. */
-  max-width: 100%;
+  max-width: 65%;
   /* Adhere to container width. */ }
 
 figure {
@@ -523,7 +523,7 @@ Content
   position: relative; }
 
 .container {
-  max-width: 600px;
+  max-width: 850px;
   margin: 0 auto;
   padding-left: 50px;
   padding-right: 50px; }
@@ -786,8 +786,8 @@ Footer
   width: 100%; }
 
 .post {
-  padding-top: 70px;
-  padding-bottom: 70px; }
+  padding-top: 50px;
+  padding-bottom: 50px; }
   .post .nav-links a {
     text-decoration: none;
     color: #3a3a3a;
