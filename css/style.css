@@ -711,21 +711,21 @@ Footer
 .site-header {
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #dcdcdc;
   z-index: 30;
   position: fixed;
   top: 0;
   left: 0;
   padding-left: 50px;
   padding-right: 50px;
-  height: 70px;
+  height: 50px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  box-shadow: 0 1px 5px #A3A3A3; }
   .site-header .button-wrap {
     display: none;
     float: right;
-    padding-top: 25px; }
+    padding-top: 13px; }
   .site-header .menu-toggle {
     width: 20px;
     height: 20px;
@@ -749,11 +749,12 @@ Footer
     display: inline-block; }
     .logo a img {
       display: block;
-      height: 60px; }
+      height: 54px;
+      max-width: 100%; }
 
 .navbar {
   float: right;
-  padding-top: 25px; }
+  padding-top: 13px; }
   .navbar ul:after {
     content: '';
     display: block;
