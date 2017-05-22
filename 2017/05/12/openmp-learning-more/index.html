@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Alex Chao">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="OpenMP Learning (More)"/>
+  
+  <!--Open Graph Description-->
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Alex&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>OpenMP Learning (More) - Alex&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="http://oowu6eof3.bkt.clouddn.com/alpha-icon.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="http://oowu6eof3.bkt.clouddn.com/blog.png" alt="Alex's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            OpenMP Learning (More)
+            
+          </h1>
+          <p class="posted-on">
+          2017-05-12
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/openmp/" rel="tag">
+                  openmp
+                </a>
+              
+                <a href="/tags/hpc/" rel="tag">
+                  hpc
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <h2 id="0-实验环境"><a href="#0-实验环境" class="headerlink" title="0 实验环境"></a>0 实验环境</h2><ul>
+<li>操作系统：macOS 10.12.4</li>
+<li>编译器：GNU GCC 7.1</li>
+<li>OpenMP：201511</li>
+</ul>
+<h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念</h2><h3 id="1-1-并行"><a href="#1-1-并行" class="headerlink" title="1.1 并行"></a>1.1 并行</h3><p><strong>并行</strong>指的是同一台机器或通过网络连接的多台机器上的多个CPU同时执行一些进程。</p>
+<h4 id="1-1-1-并行机制"><a href="#1-1-1-并行机制" class="headerlink" title="1.1.1 并行机制"></a>1.1.1 并行机制</h4><p>具体的实现方式主要有以下两种机制：</p>
+<ul>
+<li><strong>共享内存(Shared Memory)</strong>：不同进程／线程可以直接访问同一段内存</li>
+<li><strong>消息传递(Message Passing)</strong>：每一块CPU都只能访问它自己的内存空间，通过MPI消息传递接口通信</li>
+</ul>
+<p>OpenMP是一套基于<strong>共享内存</strong>机制，在多CPU机器上进行并行程序设计的API。</p>
+<h4 id="1-1-2-共享内存涉及的基本元素"><a href="#1-1-2-共享内存涉及的基本元素" class="headerlink" title="1.1.2 共享内存涉及的基本元素"></a>1.1.2 共享内存涉及的基本元素</h4><ul>
+<li><code>fork</code>／<code>join</code> 并行模式</li>
+<li>线程同步</li>
+<li>将<code>jobs</code>分配给各个线程的方法</li>
+<li>运行时调度与控制机制</li>
+</ul>
+<h4 id="1-1-3-并行计算的应用场景"><a href="#1-1-3-并行计算的应用场景" class="headerlink" title="1.1.3 并行计算的应用场景"></a>1.1.3 并行计算的应用场景</h4><ul>
+<li>包含很多高吞吐量的独立工作</li>
+<li>基于网格 (Mesh) 的编程：图划分算法</li>
+<li>基于粒子 (Particle) 的编程：元胞划分／树划分</li>
+</ul>
+<p>合适的并行算法可以很大程度上提升程序运行的速度！</p>
+<h3 id="1-2-OpenMP简介"><a href="#1-2-OpenMP简介" class="headerlink" title="1.2 OpenMP简介"></a>1.2 OpenMP简介</h3><h4 id="1-2-1-什么是OpenMP？"><a href="#1-2-1-什么是OpenMP？" class="headerlink" title="1.2.1 什么是OpenMP？"></a>1.2.1 什么是OpenMP？</h4><p><strong>OpenMP</strong>是一系列已经被主流编译器支持的，用来帮助开发者通过共享内存机制并行化一些代码段的<code>hint</code> (C/C++中的<code>#pragma</code>预处理指令) 和函数的集合。</p>
+<p>OpenMP已经被集成在<a href="http://www.openmp.org/resources/openmp-compilers/" target="_blank" rel="external">主流编译器</a>的实现中，因此不需要额外安装任何库，只需要在编译时添加<code>-fopenmp</code>参数告知编译器即可。</p>
+<blockquote>
+<p>单纯为计算机添加更多核不会让它跑的更快，你需要告诉它如何使用这些CPU。</p>
+</blockquote>
+<h4 id="1-2-2-MPI-Message-Passing-Interface"><a href="#1-2-2-MPI-Message-Passing-Interface" class="headerlink" title="1.2.2 MPI (Message Passing Interface)"></a>1.2.2 MPI (Message Passing Interface)</h4><p>MPI 是通过消息传递方式实现并行的一套接口，不同于OpenMP主要在以下几个方面：</p>
+<ul>
+<li>MPI对于分布式系统和单一机器都适用，而OpenMP仅适用于单个机器</li>
+<li>使用消息传递机制，分布式内存</li>
+<li>以第三方库的形式提供而非编译器实现</li>
+<li>相对来说在更低的level，含有更多的细节需要开发者进行处理</li>
+</ul>
+<h2 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2 基本使用"></a>2 基本使用</h2><h3 id="2-1-环境配置"><a href="#2-1-环境配置" class="headerlink" title="2.1 环境配置"></a>2.1 环境配置</h3><p>因为OpenMP已经被主流编译器集成，所以只需要确保使用的编译器支持OpenMP即可。（如果使用macOS系统，自带的<code>gcc</code>只是Apple<code>clang</code>的别名，而后者当前并不支持openmp，所以需要另外安装<code>GNU GCC</code>。通过<code>homebrew</code>直接安装是一个比较方便的选项。）</p>
+<p>通过以下四个步骤即完成所有配置操作：</p>
+<ol>
+<li>选择／安装编译器；</li>
+<li>创建Project文件夹和相应cpp文件，在首部需要<code>#include &lt;omp.h&gt;</code>，也可以加入一些<code>#pragma omp</code>来检测编译器是否能够正常工作；</li>
+<li>编写<code>makefile</code>文件，注意需要在编译时加上<code>-fopenmp</code>参数；</li>
+<li>现在已经可以通过编写Demo的方式学习OpenMP～</li>
+</ol>
+<h3 id="2-2-OpenMP程序构成要素"><a href="#2-2-OpenMP程序构成要素" class="headerlink" title="2.2 OpenMP程序构成要素"></a>2.2 OpenMP程序构成要素</h3><ul>
+<li><code>#include &lt;omp.h&gt;</code></li>
+<li>由<code>#pragma omp parallel</code>创建的并行域</li>
+<li><code>OpenMP</code>中特有的环境变量和全局函数</li>
+</ul>
+<h3 id="2-3-语法-for-C-C"><a href="#2-3-语法-for-C-C" class="headerlink" title="2.3 语法 (for C/C++)"></a>2.3 语法 (for C/C++)</h3><p>C和C++中，OpenMP主要通过<code>#pragma</code>预处理指令来指定并行域以及并行域中各个线程的行为，基本格式如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp construct_name [clauses...]</span></div><div class="line">&#123;</div><div class="line">  <span class="comment">// do something in parallel...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-3-1-并行域-Parallel-Region"><a href="#2-3-1-并行域-Parallel-Region" class="headerlink" title="2.3.1 并行域 (Parallel Region)"></a>2.3.1 并行域 (Parallel Region)</h4><p>通过<code>#pragma omp parallel [clauses...]</code>来创建一块并行域。但是默认情况下，这回让程序在这里为每一个CPU创建一个线程，分别将区域内的代码执行一遍。<code>clauses</code>可以用来改变这种默认行为。</p>
+<p>常用到的<code>clauses</code>:</p>
+<ul>
+<li><code>private(variable, ...)</code><ul>
+<li>显式指明不会被并行域内不同线程间共享的变量</li>
+</ul>
+</li>
+<li><code>firstprivate</code><ul>
+<li>用于继承公有变量的值，修改后原变量不受影响</li>
+</ul>
+</li>
+<li><code>lastprivate</code><ul>
+<li>退出并行域时将值拷贝给同名的共享变量</li>
+</ul>
+</li>
+<li><code>threadprivate</code><ul>
+<li>在每一个线程中创建一份私有的拷贝</li>
+</ul>
+</li>
+<li><code>shared(variable, ...)</code><ul>
+<li>显式指明不会被并行域内不同线程间共享的变量</li>
+<li>可能会导致race competition</li>
+</ul>
+</li>
+<li><code>nowait</code><ul>
+<li>允许先执行完的线程继续运行</li>
+</ul>
+</li>
+<li><code>if (condition)</code><ul>
+<li>为并行域中的代码是否进入并发添加一个条件限制</li>
+</ul>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel</span></div><div class="line">&#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"hello openmp\n"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">hello openmp</div><div class="line">hello openmp</div><div class="line">hello openmp</div><div class="line">hello openmp</div><div class="line">*/</div></pre></td></tr></table></figure>
+<h4 id="2-3-2-工作共享-Work-Sharing"><a href="#2-3-2-工作共享-Work-Sharing" class="headerlink" title="2.3.2 工作共享 (Work Sharing)"></a>2.3.2 工作共享 (Work Sharing)</h4><p>Work-sharing通过一系列的API，允许开发者告诉编译器如何安排各个线程在并行域中的行为。</p>
+<h5 id="2-3-2-1-Loop"><a href="#2-3-2-1-Loop" class="headerlink" title="2.3.2.1 Loop"></a>2.3.2.1 Loop</h5><p>构造：<code>#pragma omp for [clauses...]</code></p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//  use `for` inside a parallel region</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel</span></div><div class="line">&#123;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp for</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hello openmp: %d\n"</span>, i);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//  or do it in another way</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"hello openmp: %d\n"</span>, i);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">hello openmp: 0</div><div class="line">hello openmp: 6</div><div class="line">hello openmp: 3</div><div class="line">hello openmp: 8</div><div class="line">hello openmp: 1</div><div class="line">hello openmp: 7</div><div class="line">hello openmp: 4</div><div class="line">hello openmp: 9</div><div class="line">hello openmp: 2</div><div class="line">hello openmp: 5</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>可以看到此时由于并发运行输出的顺序发生了改变。</p>
+<p>不过需要注意的是<code>#pragma omp for</code>一定要在并行域中才能起到并行的作用，如果单独使用则会被编译器无视切没有任何错误提示信息。</p>
+<p><strong>Negative Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// No parallel at all!</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp for</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"hello openmp: %d\n"</span>, i);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">hello openmp: 0</div><div class="line">hello openmp: 1</div><div class="line">hello openmp: 2</div><div class="line">hello openmp: 3</div><div class="line">hello openmp: 4</div><div class="line">hello openmp: 5</div><div class="line">hello openmp: 6</div><div class="line">hello openmp: 7</div><div class="line">hello openmp: 8</div><div class="line">hello openmp: 9</div><div class="line">*/</div></pre></td></tr></table></figure>
+<h5 id="2-3-2-2-Section"><a href="#2-3-2-2-Section" class="headerlink" title="2.3.2.2 Section"></a>2.3.2.2 Section</h5><p>除了在<code>for</code>中让程序并行之外，通过使用<code>section</code>将程序划分为几个部分同样可以让OpenMP为我们自动创建线程进行并行操作，基本结构如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel sections</span></div><div class="line">&#123;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123;</div><div class="line">    <span class="comment">//  thread 0</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123;</div><div class="line">    <span class="comment">//  thread 1</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里会将每个<code>section</code>分配给不同的线程，再随机分配给不同的CPU同时执行，若<code>section</code>的数目超出了CPU数目，有的CPU会执行多个<code>section</code>；若少于CPU的数目，将导致部分CPU空闲的情况。我们可以在如下的例子中看到分配给每一个线程的分配情况。</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel sections</span></div><div class="line">&#123;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123; <span class="built_in">printf</span>(<span class="string">"section 1: %d\n"</span>, omp_get_thread_num()); &#125;</div><div class="line"></div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123; <span class="built_in">printf</span>(<span class="string">"section 2: %d\n"</span>, omp_get_thread_num()); &#125;</div><div class="line"></div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123; <span class="built_in">printf</span>(<span class="string">"section 3: %d\n"</span>, omp_get_thread_num()); &#125;</div><div class="line"></div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp section</span></div><div class="line">  &#123; <span class="built_in">printf</span>(<span class="string">"section 4: %d\n"</span>, omp_get_thread_num()); &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">section 2: 2</div><div class="line">section 3: 0</div><div class="line">section 1: 1</div><div class="line">section 4: 3</div><div class="line">*/</div></pre></td></tr></table></figure>
+<h5 id="2-3-2-3-Single"><a href="#2-3-2-3-Single" class="headerlink" title="2.3.2.3 Single"></a>2.3.2.3 Single</h5><p><code>single</code>标记的区域一定只会<strong>被一个线程执行且只一次</strong></p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> b[<span class="number">5</span>];</div><div class="line"><span class="meta"># <span class="meta-keyword">pragma</span> omp parallel</span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">int</span> a = <span class="number">0</span>;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp single</span></div><div class="line">  &#123;</div><div class="line">    a = <span class="number">10</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp for</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</div><div class="line">    b[i] = a;</div><div class="line">  &#125;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp for</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d: %d\n"</span>, b[i], omp_get_thread_num());</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">0: 0</div><div class="line">10: 3</div><div class="line">0: 1</div><div class="line">0: 2</div><div class="line">0: 0</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>可以看到只有进程3执行了<code>single</code>标记的代码块，将<code>a</code>的值进行了修改，而其他的均保持不变。</p>
+<h5 id="2-3-2-4-Critical"><a href="#2-3-2-4-Critical" class="headerlink" title="2.3.2.4 Critical"></a>2.3.2.4 Critical</h5><p><code>critical</code>标记的区域<strong>每次只有一个线程在执行</strong>，但是最终会被每个线程都执行到。（注意和<code>single</code>的区别）</p>
+<p>可以用来避免race condition。我们用并行化累加这一经典的例子来进行详细说明，任务很简单，就是用并行的方法将存在数组<code>a[]</code>中的值累加起来输出：</p>
+<p><strong>Negative Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//  Naive version, this will get wrong answer</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for shared(sum, a)</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i) &#123;</div><div class="line">  sum += a[i];</div><div class="line">&#125;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"sum test: %d\n"</span>, sum);</div></pre></td></tr></table></figure>
+<p>这个例子有时无法得到正确的结果，虽然看起来正确。只要仔细分析就会发现，在并行的<code>for</code>中，<code>sum</code>被所有线程共享，因此可能发生多个线程同时写入<code>sum</code>地址空间的问题。</p>
+<p>针对这个问题，可以用先将整个数组拆成若干小数组进行分别求和，算出各自的<code>sum</code>，然后再用<code>critical</code>对<code>sum_total</code>的写入进行保护，累加之前各自的结果，防止多线程同时写入，作为第一种解决方案：</p>
+<p><strong>Solution 1:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//  Solution 1: use critical</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel shared(N, a ,sum) private(sum_local)</span></div><div class="line">&#123;</div><div class="line">  sum_local = <span class="number">0</span>;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp for</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</div><div class="line">    sum_local += a[i];</div><div class="line">  &#125;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp critical</span></div><div class="line">  &#123;</div><div class="line">    sum += sum_local;  <span class="comment">// form global sum</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"sum test 2: %d\n"</span>, sum);</div></pre></td></tr></table></figure>
+<p>本例只是用来表现<code>critical</code>的作用，真正求和时可以使用<code>reduction</code>，更加简洁且同样可以达到目的。</p>
+<h5 id="2-3-2-5-Reduction"><a href="#2-3-2-5-Reduction" class="headerlink" title="2.3.2.5 Reduction"></a>2.3.2.5 Reduction</h5><p>通过<code>reduction</code>可以更方便地进行求和、减法、<code>and</code>、<code>or</code>等操作，下面使用<code>reduction</code>重新实现前面求和的操作如下：</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for reduction(+:sum)</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</div><div class="line">  sum += a[i];</div><div class="line">&#125;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"sum test 3: %d\n"</span>, sum);</div></pre></td></tr></table></figure>
+<p>这样同样可以避免race condition的产生。</p>
+<h5 id="2-3-2-6-Barrier"><a href="#2-3-2-6-Barrier" class="headerlink" title="2.3.2.6 Barrier"></a>2.3.2.6 Barrier</h5><p>通过<code>#pragma omp barrier</code>放置<code>barrier</code>，在此处所有线程都会进行等待直到当前所有线程的任务都已完成才会通过执行下一步操作。可以用于同步线程。</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> x = <span class="number">2</span>;</div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp parallel shared(x)</span></div><div class="line">&#123;</div><div class="line">  <span class="keyword">int</span> tid = omp_get_thread_num();</div><div class="line">  <span class="keyword">if</span> (tid == <span class="number">0</span>) &#123;</div><div class="line">    x = <span class="number">5</span>;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"[1] thread %2d: x = %d\n"</span>,tid,x);</div><div class="line">  &#125;</div><div class="line">  <span class="meta">#<span class="meta-keyword">pragma</span> omp barrier</span></div><div class="line">  <span class="built_in">printf</span>(<span class="string">"[2] thread %2d: x = %d\n"</span>, tid, x);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* output</span></div><div class="line">[1] thread  3: x = 2</div><div class="line">[1] thread  1: x = 2</div><div class="line">[1] thread  2: x = 5</div><div class="line">[2] thread  0: x = 5</div><div class="line">[2] thread  3: x = 5</div><div class="line">[2] thread  1: x = 5</div><div class="line">[2] thread  2: x = 5</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>本例中首先设置公有变量<code>x = 2</code>然后使用线程0将其修改成5。但是由于可能有部分线程先于线程0执行所以此时打印出的结果仍然是2，而经过了barrier后，所有线程中的x都被改成5，说明此时线程1一定得到了执行。</p>
+<h5 id="2-3-2-7-Schedule"><a href="#2-3-2-7-Schedule" class="headerlink" title="2.3.2.7 Schedule"></a>2.3.2.7 Schedule</h5><p><code>schedule</code>可以指定调度方式（系统默认的是static），不同的调度方式以及区别列举如下：</p>
+<p><strong>Static</strong>：每个进程被赋予固定尺寸的块</p>
+<p><img src="http://oowu6eof3.bkt.clouddn.com/static-schedule.png" alt=""></p>
+<p><strong>Dynamic</strong>: 按照线程需求分配块的大小</p>
+<p><img src="http://oowu6eof3.bkt.clouddn.com/static-schedule.png" alt=""></p>
+<p><strong>Guided</strong>: 先分配较大的块，然后逐渐分配越来越小的块</p>
+<p><img src="http://oowu6eof3.bkt.clouddn.com/guided-schedule.png" alt=""></p>
+<p><strong>Runtime</strong>: 根据用户的系统环境变量来选择调度方法</p>
+<h3 id="2-4-Race-Condition"><a href="#2-4-Race-Condition" class="headerlink" title="2.4 Race Condition"></a>2.4 Race Condition</h3><p>总结一下，当多个线程<strong>有可能</strong>对同一块地址进行写入操作，或者读写同时发生的时候，就有可能产生race condition，造成难以预料的结果。</p>
+<p>规避主要有两种方法：</p>
+<ul>
+<li>使用<code>critical</code>保护可能产生race condition的区域</li>
+<li>当可行的时候，使用<code>reduction</code></li>
+</ul>
+<h3 id="2-5-环境变量与常用函数"><a href="#2-5-环境变量与常用函数" class="headerlink" title="2.5 环境变量与常用函数"></a>2.5 环境变量与常用函数</h3><p>默认OpenMP会根据CPU数目创建相应的线程并进行并行处理，通过修改环境变量<code>#OMP_NUM_THREADS</code>、调用<code>omp_set_num_threads()</code>或者使用<code>#pragma omp parallel num_threads(integer)</code>直接指定可以改变这一默认行为。其中<code>#pragma</code>优先级最高、仅对该并行域起作用；<code>omp_set_num_threads()</code>次之，对调用后的部分起作用；修改环境变量优先级最低，对系统下所有文件起作用。</p>
+<p>其它常用到的函数主要有：</p>
+<ul>
+<li><code>omp_get_num_procs()</code>: 获取计算机上的处理器个数</li>
+<li><code>omp_get_thread_num()</code>: 获取当前线程ID</li>
+<li><code>omp_get_num_threads()</code>: 获取当前并行域中的所有线程数目</li>
+<li><code>omp_get_max_threads()</code>: 获取创建的最大线程数</li>
+</ul>
+<h2 id="3-一些主要概念的解释"><a href="#3-一些主要概念的解释" class="headerlink" title="3 一些主要概念的解释"></a>3 一些主要概念的解释</h2><ul>
+<li>线程 thread：具有栈和一段静态内存的运行实体</li>
+<li>OpenMP 线程：由OpenMP运行时系统管理的线程</li>
+<li>线程安全：多个线程同时操作时仍能具备预期功能</li>
+<li>处理器：实现的能够运行一个或多个OpenMP线程的硬件单元</li>
+<li>设备：定义了逻辑运行引擎的实现</li>
+<li>host设备：让OpenMP程序开始运行的设备</li>
+<li>target设备：从host设备获取代码和数据的设备</li>
+<li>指令 directive：定义OpenMP行为的语句</li>
+</ul>
+<h2 id="4-Reference"><a href="#4-Reference" class="headerlink" title="4 Reference"></a>4 Reference</h2><ul>
+<li><a href="http://www.linux-mag.com/id/4609/" target="_blank" rel="external">OpenMP in 30 Minutes</a></li>
+<li><a href="https://idre.ucla.edu/sites/default/files/intro-openmp-2013-02-11.pdf" target="_blank" rel="external">intro-openmp</a></li>
+<li><a href="http://www.openmp.org/resources/tutorials-articles/" target="_blank" rel="external">Openmp-Tutorial</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/tt15eb9t.aspx" target="_blank" rel="external">MSDN</a></li>
+<li><a href="http://blog.csdn.net/drzhouweiming/article/details/1131537" target="_blank" rel="external">CSDN blog</a></li>
+</ul>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2017/05/10/openmp-learning/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">THIS SITE</h1>
+        <div class="custom-widget-content">
+          
+          <p>This is a blog focusing on design, development and more amazing things.</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/alex-myzhao" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:mingyusysu@gmail.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Alex's Blog &copy; 2017</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>
