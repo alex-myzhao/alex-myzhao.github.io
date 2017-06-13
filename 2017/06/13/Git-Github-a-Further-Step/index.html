@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Alex Chao">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="Git/Github, a Further Step"/>
+  
+  <!--Open Graph Description-->
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Alex&#39;s Blog"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>Git/Github, a Further Step - Alex&#39;s Blog</title>
+
+
+  <link rel="shortcut icon" href="http://oowu6eof3.bkt.clouddn.com/alpha-icon.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="http://oowu6eof3.bkt.clouddn.com/blog.png" alt="Alex's Blog" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            Git/Github, a Further Step
+            
+          </h1>
+          <p class="posted-on">
+          2017-06-13
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/git/" rel="tag">
+                  git
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content">
+          <p>Github 除了可以用作 git 的远程仓库，还可以很方便地进行项目管理。本博客以一个项目开发的前期流程作为 demo，介绍 GitHub 在这方面的使用方法。</p>
+<h2 id="Organization"><a href="#Organization" class="headerlink" title="Organization"></a>Organization</h2><p>Organization 是 GitHub 中的可以被个人免费创建的虚拟组织。</p>
+<p><strong>为何需要 Organization？</strong><br>Organization 简化了对团队成员项目仓库的管理。通过创建 Organization，项目成员可以集中存放代码。以电影购票网站为例，开发过程中至少会存在项目前端、后端以及一个用于存放文档和管理进度的 dashboard 3个项目，此外还可能有一些临时开发出来的小工具或者脚本等等。当这些项目混在个人仓库中，查找管理很不方便，并且可能存在明明上的冲突（如果参加的多个项目都有一个叫做“Dashboard”的仓库）。<br>如下图所示：我们的 GoMovie 项目中有7名成员，整合了各种项目。<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/github-organization.png" alt=""></p>
+<p><strong>成员权限管理</strong><br>每个团队成员都有三个权限级别：pull only, push &amp; pull, push &amp; pull &amp; administative<br>分别对应：只读、可读写、管理员这三种不同层次的权限。<br><img src="https://cloud.githubusercontent.com/assets/391331/6142028/a9de0054-b163-11e4-8adb-5edc9600ff97.png" alt=""></p>
+<p><strong>Organization Fork</strong><br>有权限在 Organization 中创建仓库的成员在 fork 别的项目的时候，GitHub 会提供 fork 到个人仓库还是到 organization 中的提示。</p>
+<p>我们在开发 GoMovie 项目的时候，将开发文档单独放到 Dashboard 仓库中进行管理和共享。</p>
+<h2 id="Project"><a href="#Project" class="headerlink" title="Project"></a>Project</h2><p>在每个 repository 中，可以创建 project，用来进行团队任务规划等协作工作。<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/github-project.png" alt=""><br>我们在开发过程中把这个功能当作时间推进表来使用，在一个 high-level 上对之后一段时间对任务进行规划，定下了一些关键点的 DDL，然后分为 todo, in progress 和 done 三列。如下图所示：<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/github-project-detail.png" alt=""></p>
+<h2 id="Wiki"><a href="#Wiki" class="headerlink" title="Wiki"></a>Wiki</h2><p>Wiki 中可以用来编写项目文档，包括 API 接口文档、常见问题等，通过团队协作，编写不同的 wiki 页，可以制作出可读性高且有层次结构的文档。为了方便查看，我们在项目中将查阅频率较高等内容放在了项目的 wiki 中。<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/github-wiki.png" alt=""></p>
+<h2 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h2><p>Github 中的 Issue 同样是一个强大的功能。除了在别的开源项目中看到 Issue 用于反馈 bug 和提供改进思路之外，Issue 可以用来分派任务到团队成员，并打上各种标签以加强该任务的语义。<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/github-issue.png" alt=""><br>Github 还提供了一套标准提交 Issue 和发起 Pull Request 的<a href="https://github.com/blog/2111-issue-and-pull-request-templates" target="_blank" rel="external">模版</a>，用来帮助用户书写规范的信息。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>GitHub 完全可以当作团队协作工具进行使用，覆盖了规划制订、文件共享、任务分派等常用功能，再加上能和项目代码完美整合到一起，如果还在将 GitHub 仅仅作为一个远程 git 仓库使用会错过很多提升团队工作效率的机会。所以下次寻找团队协作软件的时候，尝试一下 Github 吧～</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://github.com/blog/674-introducing-organizations" target="_blank" rel="external">https://github.com/blog/674-introducing-organizations</a></li>
+</ul>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2017/06/13/Docker-CI-CD-Part-1/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2017/06/13/Test-Your-Vue-js/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">THIS SITE</h1>
+        <div class="custom-widget-content">
+          
+          <p>This is a blog focusing on design, development and more amazing things.</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/alex-myzhao" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:mingyusysu@gmail.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Alex's Blog &copy; 2017</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>
