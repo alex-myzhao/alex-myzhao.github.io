@@ -366,7 +366,7 @@ dd {
 img {
   height: auto;
   /* Make sure images are scaled correctly. */
-  max-width: 65%;
+  max-width: 100%;
   /* Adhere to container width. */ }
 
 figure {
@@ -523,7 +523,7 @@ Content
   position: relative; }
 
 .container {
-  max-width: 850px;
+  max-width: 700px;
   margin: 0 auto;
   padding-left: 50px;
   padding-right: 50px; }
@@ -546,11 +546,11 @@ Content
   color: #000;
   text-align: center;
   margin-bottom: 27px;
-  font-weight: 700;
-  font-size: 1.25em; }
+  font-weight: normal;
+  font-size: 24px; }
   .entry-title a {
     color: #000;
-    font-weight: 700;
+    font-weight: normal;
     text-decoration: none; }
   .entry-title:after {
     content: "";
@@ -565,7 +565,8 @@ Content
 .home .entry-content {
   margin: 1.5em 0; }
   .home .entry-content p {
-    text-align: center; }
+    text-align: left;
+    color: rgba(0, 0, 0, 0.5); }
 
 .posted-on {
   text-align: center;
@@ -787,8 +788,8 @@ Footer
   width: 100%; }
 
 .post {
-  padding-top: 50px;
-  padding-bottom: 50px; }
+  padding-top: 30px;
+  padding-bottom: 30px; }
   .post .nav-links a {
     text-decoration: none;
     color: #3a3a3a;

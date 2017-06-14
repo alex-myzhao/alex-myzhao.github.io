@@ -125,7 +125,7 @@
             
           </h1>
           <p class="posted-on">
-          2017-06-13
+            2017-06-13
           </p>
           <div class="tags-links">
             
@@ -143,7 +143,8 @@
         </div>
         <!-- Post Main Content -->
         <div class="entry-content">
-          <h2 id="Docker-基础知识"><a href="#Docker-基础知识" class="headerlink" title="Docker 基础知识"></a>Docker 基础知识</h2><p>Docker 使用 Google 公司推出的 Go 语言 进行开发实现，基于 Linux 内核的 cgroup，namespace，以及 AUFS 类的 Union FS 等技术，对进程进行封装隔离，属于<strong>操作系统层面</strong>的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也被称为容器。</p>
+          <p>什么是 Docker 和容器？Docker 使用 Google 公司推出的 Go 语言进行开发实现，基于 Linux 内核的 cgroup，namespace，以及 AUFS 类的 Union FS 等技术，对进程进行封装隔离，属于<strong>操作系统层面</strong>的虚拟化技术。由于隔离的进程独立于宿主和其它的隔离的进程，因此也被称为容器。</p>
+<a id="more"></a>
 <h3 id="容器和虚拟机"><a href="#容器和虚拟机" class="headerlink" title="容器和虚拟机"></a>容器和虚拟机</h3><p>刚刚接触容器的初学者容易将其和虚拟机弄混，网络上也有很多在两者之间做的比较。然而，追溯到本质和源头，两者的不同之处在于：传统虚拟机技术是<strong>先虚拟出一套硬件</strong>，然后在其上运行一个完整操作系统，在该系统上再运行所需应用进程，对外表现就像一台真实的计算机；而容器内的应用进程<strong>直接运行于宿主的内核</strong>，内部没有自己的内核，而且也没有进行硬件的虚拟化，对外表现就像一个普通的进程。<br>如下图所示：</p>
 <p><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/vm.png" alt=""><br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/docker.png" alt=""></p>
 <p>在这里我们可以做一个简单的实验：运行一个基于 ubuntu bash 的容器 <em>caffe</em>，然后查看该容器下运行的进程：<br><img src="http://oowu6eof3.bkt.clouddn.com/blog/docker-ci-cd/caffe.png" alt=""><br>发现只有 bash 和 ps 这两个进程在执行，这意味着当我们使用容器时，只是虚拟化了执行相应程序需要用到的环境。而不需要的部分并没有被虚拟化，因此大大减少了开销。</p>
