@@ -711,7 +711,8 @@ Footer
 
 .site-header-hidden {
   opacity: 0;
-  transition: 1s; }
+  transition: 1s;
+  visibility: hidden; }
 
 .site-header-with-shadow {
   box-shadow: 0 1px 5px #A3A3A3;
